@@ -1,36 +1,33 @@
 package com.wherlock.myFirstGame.components;
 
+import com.wherlock.myFirstGame.components.ai.AI;
+import com.wherlock.myFirstGame.components.input.InputSource;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.view.MotionEvent;
 
 public class GameObject {
 
 	private Bitmap bitmap;
-	
-	private Speed speed;
-	
-	private int x;	
+
+	private int x;
 	private int y;
-	
+
 	private boolean touched;
 	private boolean visible;
 
 	private InputSource inputSource;
-	
+	private AI ai;
+
 	public GameObject(Bitmap bitmap, int x, int y) {
 		this.bitmap = bitmap;
 		this.x = x;
 		this.y = y;
-		speed = new Speed();
 	}
 
 	public Bitmap getBitmap() {
 		return bitmap;
-	}
-
-	public void setBitmap(Bitmap bitmap) {
-		this.bitmap = bitmap;
 	}
 
 	public int getX() {
@@ -48,41 +45,41 @@ public class GameObject {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
-	public void setTouched(boolean touched) {
-		this.touched = touched;
-	}
-	
-	public boolean isTouched() {
-		return touched;
-	}
-	
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
-	
-	public boolean isVisible() {
-		return visible;
-	}
-	
-	public void draw(Canvas canvas) {
-		canvas.drawBitmap(bitmap, x - (bitmap.getWidth() / 2), y - (bitmap.getHeight() / 2), null);
-	}
-	
-	public Speed getSpeed() {
-		return speed;
-	}
-
-	public void update() {
-		if (!touched) {
-			x += speed.getXv() * speed.getxDirection();
-			y += speed.getYv() * speed.getyDirection();
-		}
-	}
 
 	public void setInputSource(InputSource inputSource) {
 		this.inputSource = inputSource;
 	}
-	
-	
+
+	public void setAI(AI ai) {
+		this.ai = ai;
+	}
+
+	public void setTouched(boolean touched) {
+		this.touched = touched;
+	}
+
+	public boolean isTouched() {
+		return touched;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void draw(Canvas canvas) {
+		canvas.drawBitmap(bitmap, x - (bitmap.getWidth() / 2),
+				y - (bitmap.getHeight() / 2), null);
+	}
+
+	public void update() {
+		if (inputSource != null && ai != null) {
+			
+			MotionEvent event = inputSource.getNextMove();
+			ai.update(event);
+		}
+	}
 }

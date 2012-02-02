@@ -1,4 +1,4 @@
-package com.wherlock.myFirstGame.components;
+package com.wherlock.myFirstGame.components.input;
 
 import android.view.MotionEvent;
 

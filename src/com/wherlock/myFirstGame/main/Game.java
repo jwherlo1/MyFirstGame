@@ -6,8 +6,8 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.wherlock.myFirstGame.R;
-import com.wherlock.myFirstGame.components.HumanInputSource;
 import com.wherlock.myFirstGame.components.World;
+import com.wherlock.myFirstGame.components.input.HumanInputSource;
 
 public class Game extends Thread {
 	
@@ -34,7 +34,6 @@ public class Game extends Thread {
 		this.mainGameView = mainGameView;
 		this.surfaceHolder = surfaceHolder;
 		
-		loadResources();
 		initialiseGameWorld();
 	}
 	
@@ -101,19 +100,16 @@ public class Game extends Thread {
 		canvas.drawColor(Color.BLACK);
 		gameWorld.render(canvas);
 	}
-
-	private void loadResources() {
-		gameWorld.setSpaceShipSprite(resourceManager.getBitmap(R.drawable.spaceship));
-		gameWorld.setLasersSprites(resourceManager.getBitmap(R.drawable.laser));
-		gameWorld.setAliensSprites(resourceManager.getBitmap(R.drawable.alien));
-	}
 	
 	private void initialiseGameWorld() {
 		gameWorld.setWorldBoundary(mainGameView.getWidth(), mainGameView.getHeight());
 		
 		HumanInputSource playerInput = new HumanInputSource();
 		mainGameView.addTouchEventListener(playerInput);
-		gameWorld.setPlayerInput(playerInput);
+		
+		gameWorld.createPlayerSpaceShip(resourceManager.getBitmap(R.drawable.spaceship), playerInput);
+		gameWorld.createLasers(resourceManager.getBitmap(R.drawable.laser));
+		gameWorld.createAliens(resourceManager.getBitmap(R.drawable.alien));
 	}
 
 	private void updateStats(int framesSkipped) {
