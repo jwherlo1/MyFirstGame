@@ -3,6 +3,8 @@ package com.wherlock.myFirstGame.main;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.wherlock.myFirstGame.model.input.TouchEventListener;
+
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -14,7 +16,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	
 	private static final String TAG = GameView.class.getSimpleName();
 	
-	private Game gameThread;
+	private GameLoop gameThread;
 	
 	private List<TouchEventListener> touchEventListeners = new ArrayList<TouchEventListener>();
 	
@@ -32,7 +34,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 	
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		gameThread = new Game(this, getHolder());
+		gameThread = new GameLoop(this, getHolder());
 		gameThread.setRunning(true);
 		gameThread.start();		
 	}
